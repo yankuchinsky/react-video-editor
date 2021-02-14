@@ -4,6 +4,13 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+import { ServicesContainer } from './services/ServicesContainer';
+import { CommandService } from './services/CommandService';
+
+const commandService = new CommandService();
+
+ServicesContainer.getInstance().addService(commandService);
+
 ReactDOM.render(
   <React.StrictMode>
     <App />

@@ -6,10 +6,13 @@ import reportWebVitals from './reportWebVitals';
 
 import { ServicesContainer } from './services/ServicesContainer';
 import { CommandService } from './services/CommandService';
+import { KeyListenerService } from './services/KeyListenerService';
 
 const commandService = new CommandService();
+const keyListenerService = new KeyListenerService();
 
 ServicesContainer.getInstance().addService(commandService);
+ServicesContainer.getInstance().addService(keyListenerService);
 
 ReactDOM.render(
   <React.StrictMode>

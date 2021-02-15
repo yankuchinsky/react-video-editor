@@ -1,4 +1,5 @@
-import { BaseService, ServicesNames, IService } from './BaseService';
+import { BaseService, IService } from './BaseService';
+import { ServicesNames } from './ServicesNames';
 
 export interface ICommandService extends IService {
   runCommand: (Command: Command) => void;
@@ -13,6 +14,8 @@ export class Command {
     this.commandToExecute = commandToExecute;
     this.commandToUndo = commandToUndo;
     this.prevState = state;
+
+    // console.log('PREV', this.prevState);
   }
 
   private prevState: string;
@@ -29,6 +32,8 @@ export class Command {
   }
 
   public undo() {
+    // console.log('DONE', this.prevState);
+
     this.commandToUndo(this.prevState);
   }
 }

@@ -1,6 +1,4 @@
-export enum ServicesNames {
-  CommandService = 'CommandService',
-}
+import { ServicesNames } from './ServicesNames';
 
 export interface IService {
   serviceName: ServicesNames;

@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import { ServicesNames } from '../services/BaseService';
+import { ServicesNames } from '../services/ServicesNames';
 import { CommandService, Command } from '../services/CommandService';
+import { IKeyListenerService } from '../services/KeyListenerService';
 import { ServicesContainer } from '../services/ServicesContainer';
 
 const Component = () => {
@@ -10,11 +11,20 @@ const Component = () => {
     ServicesNames.CommandService
   ) as CommandService;
 
+  const keyListenerService = services.getService(
+    ServicesNames.KeyListenerService
+  ) as IKeyListenerService;
+
   const [text, setText] = useState<string>('');
 
-  const func = () => {
+  const undoFunction = () => {
     commandService.undoCommand();
   };
+
+  keyListenerService.bindActionToKeys(window.document, undoFunction, [
+    'Control',
+    'z',
+  ]);
 
   const change = (event: any) => {
     if (!event.target.value) {
@@ -38,7 +48,8 @@ const Component = () => {
   return (
     <div>
       <textarea onChange={change} value={text}></textarea>
-      <button onClick={func}>Click</button>
+      <textarea></textarea>
+      <button onClick={undoFunction}>Click</button>
     </div>
   );
 };

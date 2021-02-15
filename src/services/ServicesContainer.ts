@@ -1,4 +1,5 @@
-import { BaseService, ServicesNames, IService } from './BaseService';
+import { IService } from './BaseService';
+import { ServicesNames } from './ServicesNames';
 
 export class ServicesContainer {
   private static instance: ServicesContainer;

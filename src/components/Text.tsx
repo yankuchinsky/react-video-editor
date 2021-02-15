@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, createRef } from 'react';
 import { ServicesNames } from '../services/ServicesNames';
 import { CommandService, Command } from '../services/CommandService';
 import { IKeyListenerService } from '../services/KeyListenerService';
@@ -16,6 +16,7 @@ const Component = () => {
   ) as IKeyListenerService;
 
   const [text, setText] = useState<string>('');
+  const el = createRef<HTMLDivElement>();
 
   const undoFunction = () => {
     commandService.undoCommand();
@@ -27,28 +28,34 @@ const Component = () => {
   ]);
 
   const change = (event: any) => {
-    if (!event.target.value) {
+    const html = el.current?.innerHTML;
+    const isUndo = event.nativeEvent.inputType === 'historyUndo';
+
+    if (!html || isUndo) {
       return;
     }
 
-    const { value } = event.target;
-
     const execFunc = () => {
-      setText(value);
+      setText(html);
     };
 
     const undoFunc = (prevState: string) => {
       setText(prevState);
     };
 
-    const command = new Command(execFunc, undoFunc, text);
+    const command = new Command(execFunc, undoFunc, text.toString());
     commandService.runCommand(command);
   };
 
   return (
     <div>
-      <textarea onChange={change} value={text}></textarea>
-      <textarea></textarea>
+      <div
+        onInput={change}
+        ref={el}
+        contentEditable
+        style={{ width: '1000px', height: '1000px', border: '1px solid #000' }}
+        dangerouslySetInnerHTML={{ __html: text }}
+      />
       <button onClick={undoFunction}>Click</button>
     </div>
   );
